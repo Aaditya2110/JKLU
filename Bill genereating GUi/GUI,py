@@ -1,0 +1,311 @@
+from tkinter import *
+from tkinter import filedialog
+import os 
+from datetime import datetime
+from tkinter.filedialog import askopenfile
+import tkinter.messagebox as messagebox
+import json
+
+def check_credentials(username,password):
+
+    with open("credentials.json", "r") as file:
+        data = json.load(file)
+        if data["username"] == username and data["password"] == password:
+            return True
+        else:
+            print("Invalid Username or password")
+            messagebox.showerror("Error", "Invalid username or password")
+        
+def change_password(username, old_password, new_password):
+    with open("credentials.json", "r") as file:
+        data = json.load(file)
+        if data["username"] == username and data["password"] == old_password:
+            data["password"] = new_password
+            with open("credentials.json", "w") as file:
+                json.dump(data, file)
+            print("Password changed successfully")
+            messagebox.showinfo("Success", "Password changed successfully")
+        else:
+            print("Invalid username or old password")
+            messagebox.showerror("Error", "Invalid username or password")
+
+def show_main_gui():
+    
+
+        window = Toplevel()
+        window.title("BILL")
+        window.geometry("700x500")
+        window.configure(bg = "#16A085",bd=3,borderwidth=2,)
+        window.minsize(750,500)
+        window.maxsize(750,500)
+
+        def exit():
+            window.destroy()
+            
+
+        
+        def calculate():
+            Sandwich=e1.get()
+            Samosa = e2.get()
+            Momos = e3.get()
+            Maggi = e4.get()
+            Burger = e5.get()
+            Pizza = e6.get()
+            Tea = e7.get()
+            Coffee = e8.get()
+            Cold_Coffee = e9.get()
+            print(type(" "))
+            total = ((int(Sandwich)*30)+(int(Samosa)*10)+(int(Momos)*40)+(int(Maggi)*40)+(int(Burger)*50)+ (int(Pizza)*60)+(int(Tea)*10)+(int(Coffee)*15)+(int(Cold_Coffee)*50))
+            e10.delete(0,'end')
+            e10.insert(0,total)
+            
+
+        def reset_entry ():
+            e1.delete(0,'end')
+            e1.insert(0,'00')
+            e2.delete(0,'end')
+            e2.insert(0,'00')
+            e3.delete(0,'end')
+            e3.insert(0,'00')
+            e4.delete(0,'end')
+            e4.insert(0,'00')
+            e5.delete(0,'end')
+            e5.insert(0,'00')
+            e6.delete(0,'end')
+            e6.insert(0,'00')
+            e7.delete(0,'end')
+            e7.insert(0,'00')
+            e8.delete(0,'end')
+            e8.insert(0,'00')
+            e9.delete(0,'end')
+            e9.insert(0,'00')
+            e10.delete(0,'end')
+            e10.insert(0,'00')
+
+       
+        def print_bill():
+            Sandwich=e1.get()
+            Samosa = e2.get()
+            Momos = e3.get()
+            Maggi = e4.get()
+            Burger = e5.get()
+            Pizza = e6.get()
+            Tea = e7.get()
+            Coffee = e8.get()
+            Cold_Coffee = e9.get()
+            total = ((int(Sandwich)*30)+(int(Samosa)*10)+(int(Momos)*40)+(int(Maggi)*40)+(int(Burger)*50)+ (int(Pizza)*60)+(int(Tea)*10)+(int(Coffee)*15)+(int(Cold_Coffee)*50))
+            now = datetime.now()
+            date_time = now.strftime("%d/%m/%Y %H:%M:%S")
+            bill = "JKLU CAFETERIA BILL\n\n"
+            bill += "Date and Time: " + date_time + "\n\n"
+            bill += "Item\t\t\t\tQuantity\t\t\tPrice\n\n"
+            bill += "Sandwich\t\t\t" + Sandwich + "\t\t\t\t" + str(int(Sandwich)*30) + "\n"
+            bill += "Samosa\t\t\t\t" + Samosa + "\t\t\t\t" + str(int(Samosa)*10) + "\n"
+            bill += "Momos\t\t\t\t" + Momos + "\t\t\t\t" + str(int(Momos)*40) + "\n"
+            bill += "Maggi\t\t\t\t" + Maggi + "\t\t\t\t" + str(int(Maggi)*40) + "\n"
+            bill += "Burger\t\t\t\t" + Burger + "\t\t\t\t" + str(int(Burger)*50) + "\n"
+            bill += "Pizza\t\t\t\t" + Pizza + "\t\t\t\t" + str(int(Pizza)*60) + "\n"
+            bill += "Tea\t\t\t\t" + Tea + "\t\t\t\t" + str(int(Tea)*10) + "\n"
+            bill += "Coffee\t\t\t\t" + Coffee + "\t\t\t\t" + str(int(Coffee)*15) + "\n"
+            bill += "Cold Coffee\t\t\t" + Cold_Coffee + "\t\t\t\t" + str(int(Cold_Coffee)*50) + "\n\n"
+            bill += "Total\t\t\t\t\t\t\t\t" + str(total)+ '\n\n'
+            bill += "Thanku for visiting Cafeteria"
+
+            print(bill)
+
+            with open("bill.txt","w") as f:
+                f.write(bill)
+
+            os.system("notepad/p bill.txt")    
+
+        print_button = Button(window, text="Print Bill",width=10, command=print_bill,bg="light blue",fg="black")
+        print_button.place(x=450, y=430)
+
+            
+
+        label0 = Label(window,text="JKLU CAFETERIA",font="times 28 bold underline", bg="#DD674A")
+        label0.place(x=350 ,y =40,anchor=CENTER)
+
+        label1 = Label(window,text="Menu", font="times 18 bold", bg= "light green")
+        label1.place(x=550 ,y =80)
+
+        label2 = Label(window,text="Sandwich              Rs 30", font="times 18" ,bg="#16A085")
+        label2.place(x=450 ,y =120)
+
+        label3 = Label(window,text="Samosa                 Rs 10", font="times 18",bg="#16A085")
+        label3.place(x=450 ,y= 150)
+
+        label4 = Label(window,text="Momos                 Rs 40", font="times 18",bg="#16A085")
+        label4.place(x=450 ,y =180)
+
+        label5 = Label(window,text="Maggi                   Rs 40", font="times 18",bg="#16A085")
+        label5.place(x=450 ,y =210)
+
+        label12 = Label(window,text="Burger                  Rs 50", font="times 18",bg="#16A085")
+        label12.place(x=450 ,y =240)
+
+        label13 = Label(window,text="Pizza                    Rs 60", font="times 18",bg="#16A085")
+        label13.place(x=450 ,y =270)
+
+        label16 = Label(window,text="Tea                       Rs 10", font="times 18",bg="#16A085")
+        label16.place(x=450 ,y =300)
+
+        label17 = Label(window,text="Coffee                  Rs 15 ", font="times 18",bg="#16A085")
+        label17.place(x=450 ,y =330)
+
+        label18 = Label(window,text="Cold Coffee         Rs 50 ", font="times 18",bg="#16A085")
+        label18.place(x=450 ,y =360)
+
+        #billing counter
+        label6 = Label(window,text = "Select Items" ,font= "times 18 bold",bg= "light green")
+        label6.place(x=70,y=80)
+
+        label7 = Label(window,text="Sandwich", font="times 16 bold", bg="#16A085")
+        label7.place(x=20 ,y =120)
+        e1 = Entry(window,width=10,bg="#9EE7BD")
+        e1.insert(0,"00")
+        e1.place(x=20, y =150)
+
+        label8 = Label(window,text="Samosa", font="times 16 bold", bg="#16A085")
+        label8.place(x=180 ,y =120)
+        e2 = Entry(window,width=10, bg="#9EE7BD")
+        e2.insert(0,"00")
+        e2.place(x=180, y =150)
+
+        label9= Label(window,text="Momos", font="times 16 bold",bg="#16A085")
+        label9.place(x=20 ,y =200)
+        e3 = Entry(window,width=10, bg= "#9EE7BD")
+        e3.insert(0,"00")
+        e3.place(x=20, y =230)
+
+        label10 = Label(window,text="Maggi", font="times 16 bold",bg="#16A085")
+        label10.place(x=180 ,y =200)
+        e4 = Entry(window,width=10, bg= "#9EE7BD")
+        e4.insert(0,"00")
+        e4.place(x=180, y =230)
+
+        label14 = Label(window,text="Burger", font="times 16 bold", bg= "#16A085")
+        label14.place(x=20 ,y =280)
+        e5 = Entry(window,width=10, bg= "#9EE7BD")
+        e5.insert(0,"00")
+        e5.place(x=20, y =310)
+
+        label15 = Label(window,text="Pizza", font="times 16 bold", bg= "#16A085")
+        label15.place(x=180 ,y =280)
+        e6 = Entry(window,width=10, bg="#9EE7BD")
+        e6.insert(0,"00")
+        e6.place(x=180, y =310)
+
+        label19 = Label(window,text="Tea", font="times 16 bold", bg="#16A085")
+        label19.place(x=340 ,y =120)
+        e7 = Entry(window,width=10,bg="#9EE7BD")
+        e7.insert(0,"00")
+        e7.place(x=340, y =150)
+
+        label20 = Label(window,text="Coffee", font="times 16 bold", bg="#16A085")
+        label20.place(x=340 ,y =200)
+        e8 = Entry(window,width=10,bg="#9EE7BD")
+        e8.insert(0,"00")
+        e8.place(x=340, y =230)
+
+        label21 = Label(window,text="Cold Coffee", font="times 16 bold", bg="#16A085")
+        label21.place(x=330 ,y =280)
+        e9 = Entry(window,width=10,bg="#9EE7BD")
+        e9.insert(0,"00")
+        e9.place(x=340, y =310)
+
+        b2=Button(window, text= "Bill" , width=20,command= calculate, fg="black", bg="light blue")
+        b2.place(x=100, y=400)
+
+        b3=Button(window, text= "Reset" , width=20,command = reset_entry , fg="black", bg="light blue")
+        b3.place(x=100, y=430)
+
+        b4=Button(window, text= "EXIT" , width=10,command= exit, fg="Red", bg="grey")
+        b4.place(x=450, y=400)
+
+        label22 = Label(window,text="Rs", font="times 20 ", bg="#16A085")
+        label22.place(x=63,y =357)
+        e10 = Entry(window,width=10,font="2",bg="#16A085")
+        e10.place(x=97,y=362)
+        e10.insert(0,"00")
+
+        label23 = Label(window,text="/-", font="times 20 ", bg="#16A085")
+        label23.place(x=200,y =357)
+
+        window.mainloop()
+
+    
+def change_password_screen():
+    change_password_root = Toplevel()
+    change_password_root.title("Change Password")
+    change_password_root.geometry("250x250")
+    change_password_root.minsize(250,250)
+    change_password_root.maxsize(250,250)
+
+    change_password_root.configure(bg="#16A085")
+    
+
+    old_password_label = Label(change_password_root, text="Username:",bg="#16A085")
+    old_password_label.place(x=10,y=25)
+
+    username_entry1 = Entry(change_password_root,bg="#B6ECE2")
+    username_entry1.place(x=100,y=25)
+    
+  
+    old_password_label = Label(change_password_root, text="Old Password:",bg="#16A085")
+    old_password_label.place(x=10, y =65)
+
+    old_password_entry = Entry(change_password_root, show="*",bg = "#B6ECE2")
+    old_password_entry.place(x=100,y=65)
+
+    new_password_label = Label(change_password_root, text="New Password:",bg="#16A085")
+    new_password_label.place(x=10,y = 105)
+
+   
+    new_password_entry = Entry(change_password_root, show="*",bg = "#B6ECE2")
+    new_password_entry.place(x=100, y = 105)
+
+    change_password_button =Button(change_password_root, text="Change Password",bg="light blue", command=lambda : change_password(username_entry1.get(),old_password_entry.get(),new_password_entry.get()))
+    change_password_button.place(x=75,y=145)
+
+def login_screen():
+    login_root = Tk()
+    login_root.geometry("250x250")
+    login_root.minsize(250,250)
+    login_root.maxsize(250,250)
+
+    login_root.title("Login Screen")
+    login_root.configure(bg = "#16A085")
+    
+    
+    username_label = Label(login_root, text="Username:",font='arial 12 bold ',bg ="#16A085" )
+    username_label.place(x=10, y=35)
+
+    username_entry = Entry(login_root,bg ="#B6ECE2" )
+    username_entry.place(x=100, y=40)
+
+   
+    password_label = Label(login_root, text="Password:",font= ' arial 12 bold',bg ="#16A085")
+    password_label.place(x=10, y=80)
+
+    password_entry = Entry(login_root, show="*",bg ="#B6ECE2" )
+    password_entry.place(x=100, y=82)
+
+    
+    login_button = Button(login_root, text="Login",font = 'arial 10 bold',bg = 'light blue', command=lambda : check_credentials_and_show_main_gui(username_entry.get(),password_entry.get()))
+    login_button.place(x=90, y=130)
+    
+    change_password_button = Button(login_root, text="Change Password",font = 'arial 10 bold',bg = 'light blue', command=change_password_screen)
+    change_password_button.place(x=60, y=170)
+
+    login_root.mainloop()
+
+def check_credentials_and_show_main_gui(username,password):
+    if check_credentials(username,password):
+        show_main_gui()
+    else:
+        print("Invalid username or password")
+        messagebox.showerror("Error", "Invalid username or password")
+
+login_screen()
+
